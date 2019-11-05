@@ -3,17 +3,19 @@ package dk.dtu.philipsclockradio;
 import android.content.Context;
 
 public class StateSave extends StateAdapter{
+
+    int kanalNummer = 0;
+
     @Override
     public void onEnterState(ContextClockradio context) {
 
         context.ui.turnOnTextBlink();
-        StateRadio.gemteAmKanaler[0] = 2;
 
         //Hvis du gemmer i AM
         if (StateRadio.playingFM) {
-            context.ui.setDisplayText("FM");
+            context.ui.setDisplayText("FM 1");
         } else {
-            context.ui.setDisplayText("AM");
+            context.ui.setDisplayText("AM 1");
         }
 
 
@@ -21,6 +23,7 @@ public class StateSave extends StateAdapter{
 
     @Override
     public void onExitState(ContextClockradio context) {
+        context.ui.turnOffTextBlink();
 
     }
 
@@ -36,6 +39,25 @@ public class StateSave extends StateAdapter{
 
     @Override
     public void onClick_Preset(ContextClockradio context) {
+        // confirmer den kanal man vil gemme på
+        int[] listen;
+
+        //Hvilken liste man skal gemme på
+        if (StateRadio.playingFM) {
+            //Hvis det er FM
+            listen = StateRadio.getGemteFmKanaler();
+            listen[kanalNummer] = StateRadio.getFmTuneValue();
+
+        } else {
+            listen = StateRadio.getGemteAmKanaler();
+            listen[kanalNummer] = StateRadio.getAmTuneValue();
+        }
+
+        //lukker ned igen og tilbage til radio state
+
+        context.updateDisplayTime();
+        context.setState(new StateRadio());
+
 
     }
 
@@ -76,7 +98,17 @@ public class StateSave extends StateAdapter{
 
     @Override
     public void onLongClick_Preset(ContextClockradio context) {
+        //skifter plads den gemma forbindelsen på
+        kanalNummer++;
+        if (kanalNummer == 5) {
+            kanalNummer = 0;
+        }
 
+        if (StateRadio.playingFM) {
+            context.ui.setDisplayText("FM:" + (kanalNummer+1));
+        } else {
+            context.ui.setDisplayText("AM:" + (kanalNummer+1));
+        }
     }
 
     @Override

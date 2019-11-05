@@ -2,28 +2,36 @@ package dk.dtu.philipsclockradio;
 
 public class StateRadio extends StateAdapter {
 
-    int fmTuneValue = 0;
-    int amTuneValue = 0;
+    private static int fmTuneValue = 0;
+    private static int amTuneValue;
+    //    private int fmTuneValue = 0;
+    //    private int amTuneValue = 0;
+
+
     // 0 og 50 er ikke kanaler men ender nu ! :D !
     //Disse kanaler er nogen som vi skal forstille os der er virkelige
     int[] fmChannels = {0, 1, 2, 5, 8, 12, 17, 23, 33, 36, 40, 50};
     int[] amChannels = {0, 2, 3, 7, 9, 11, 14, 23, 30, 33, 39, 50};
 
     //Gemte kanaler... som ikke bliver brugt til noget i opgaven???
-    public static int[] gemteFmKanaler = new int[5];
-    public static int[] gemteAmKanaler = new int[5];
+    private static int[] gemteFmKanaler = new int[5];
+    private static int[] gemteAmKanaler = new int[5];
 
 
     public static boolean playingFM = true;
 
+
+
     @Override
     public void onEnterState(ContextClockradio context) {
         context.ui.toggleRadioPlaying(true);
+        context.ui.turnOnLED(4);
     }
 
     @Override
     public void onExitState(ContextClockradio context) {
         context.ui.toggleRadioPlaying(false);
+        context.ui.turnOffLED(4);
     }
 
     @Override
@@ -135,6 +143,7 @@ public class StateRadio extends StateAdapter {
 
     @Override
     public void onLongClick_Power(ContextClockradio context) {
+        onExitState(context);
         context.setState(new StateStandby(context.getTime()));
     }
 
@@ -229,6 +238,34 @@ public class StateRadio extends StateAdapter {
                 }
             }
         }
+
+
+
+        //getter and setter
+    public static int getAmTuneValue() {
+        return amTuneValue;
     }
+
+    public static int getFmTuneValue() {
+        return fmTuneValue;
+    }
+
+    public static int[] getGemteFmKanaler() {
+        return gemteFmKanaler;
+    }
+
+    public static void setGemteFmKanaler(int[] gemteFmKanaler) {
+        StateRadio.gemteFmKanaler = gemteFmKanaler;
+    }
+
+    public static int[] getGemteAmKanaler() {
+        return gemteAmKanaler;
+    }
+
+    public static void setGemteAmKanaler(int[] gemteAmKanaler) {
+        StateRadio.gemteAmKanaler = gemteAmKanaler;
+    }
+}
+
 
 
