@@ -105,6 +105,15 @@ public class StateRadio extends StateAdapter {
     @Override
     public void onClick_AL2(ContextClockradio context) {
 
+        context.setAlarmActive(!context.isAlarmActive());
+        if (context.isAlarmActive()){
+            context.ui.turnOnLED(5);
+            System.out.println("activ alarm");
+        } else {
+            context.ui.turnOffLED(5);
+            System.out.println("inactiv alarm");
+        }
+
     }
 
     @Override

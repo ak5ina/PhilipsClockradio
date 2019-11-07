@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainUI extends AppCompatActivity implements OnTouchListener {
-    public TextView timeTextView, statusTextview, fmamTextView, fmtextview, amtextview;
+    public TextView timeTextView, statusTextview, fmamTextView, fmtextview, amtextview, testText;
     private Button btn_hour, btn_min, btn_preset, btn_sleep, btn_al1, btn_al2, btn_snooze;
     private ImageButton btn_power;
     private ImageView circle1, circle2, circle3, circle4, circle5;
@@ -54,6 +54,7 @@ public class MainUI extends AppCompatActivity implements OnTouchListener {
         statusTextview = (TextView) findViewById(R.id.statusText);
         fmtextview = (TextView) findViewById(R.id.fmText);
         amtextview = (TextView) findViewById(R.id.amText);
+        testText = (TextView) findViewById(R.id.testText);
         circle1 = (ImageView) findViewById(R.id.circle1);
         circle2 = (ImageView) findViewById(R.id.circle2);
         circle3 = (ImageView) findViewById(R.id.circle3);
@@ -260,6 +261,10 @@ public class MainUI extends AppCompatActivity implements OnTouchListener {
         } else {
             amtextview.setText("AM frekvens: " + frekvens);
         }
+    }
+
+    public void updateAlarmText(String text){
+        testText.setText(text);
     }
 
 

@@ -2,6 +2,8 @@ package dk.dtu.philipsclockradio;
 
 import android.content.Context;
 import android.os.Handler;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class StateStandby extends StateAdapter {
@@ -23,8 +25,23 @@ public class StateStandby extends StateAdapter {
                 long currentTime = mTime.getTime();
                 mTime.setTime(currentTime + 60000);
                 mContext.setTime(mTime);
+
             } finally {
                 mHandler.postDelayed(mSetTime, 60000);
+
+                if (mContext.getAlarm() != null) {
+                    if (mContext.isAlarmActive() && mContext.getTime().getHours() == mContext.getAlarm().getHours() && mContext.getTime().getMinutes() == mContext.getAlarm().getMinutes()) {
+                        AlarmRinging(mContext);
+                        mContext.setAlarm(null);
+                    }
+                }
+                if (mContext.isSnooze()) {
+                    mContext.setSnoozelaps(mContext.getSnoozelaps() + 1);
+
+                    if (mContext.getSnoozelaps() == 9) {
+                        AlarmRinging(mContext);
+                    }
+                }
             }
         }
     };
@@ -75,9 +92,30 @@ public class StateStandby extends StateAdapter {
     }
 
     @Override
-    public void onLongClick_AL2(ContextClockradio context) {
+    public void onClick_AL2(ContextClockradio context) {
 
-        context.setState(new StateAlarm());
+        context.setAlarmActive(!context.isAlarmActive());
+        if (context.isAlarmActive()){
+            context.ui.turnOnLED(5);
+            System.out.println("activ alarm");
+        } else {
+            context.ui.turnOffLED(5);
+            System.out.println("inactiv alarm");
+        }
+
+    }
+
+    @Override
+    public void onClick_Snooze(ContextClockradio context) {
+
+
+    }
+
+    public void AlarmRinging(ContextClockradio context){
+
+        context.setState(new StateAlarmRinging());
+
+
     }
 
 

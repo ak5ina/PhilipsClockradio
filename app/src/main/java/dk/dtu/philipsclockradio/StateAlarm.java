@@ -18,6 +18,7 @@ public class StateAlarm extends StateAdapter{
     @Override
     public void onEnterState(ContextClockradio context) {
         nyTime = (Date) context.getTime().clone();
+        saveAlarm = context.getAlarm();
 
         context.ui.turnOnTextBlink();
         context.updateDisplayTime();
@@ -27,6 +28,17 @@ public class StateAlarm extends StateAdapter{
     @Override
     public void onExitState(ContextClockradio context) {
         context.ui.turnOffTextBlink();
+        context.setAlarm(nyTime);
+
+        if (saveAlarm != null){
+            Date date = context.getAlarm();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            String dateString = dateFormat.format(date);
+
+            context.ui.updateAlarmText(dateString);
+        }
+
     }
 
     @Override
@@ -35,7 +47,7 @@ public class StateAlarm extends StateAdapter{
         nyTime.setTime(nyTime.getTime() + 3600000);
 
 
-        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 
         String dateString = dateFormat.format(nyTime);
 
@@ -48,7 +60,10 @@ public class StateAlarm extends StateAdapter{
     public void onClick_Min(ContextClockradio context) {
         //Gets current timestamp (Date)
         nyTime.setTime(nyTime.getTime() + 60000);
-        context.ui.setDisplayText(String.valueOf(nyTime.getTime()));
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        String dateString = dateFormat.format(nyTime);
+        context.ui.setDisplayText(dateString);
     }
 
     @Override

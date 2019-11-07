@@ -8,7 +8,12 @@ public class ContextClockradio {
     private State currentState;
     private Date mTime;
     private String mDisplayText;
+    private Date alarm;
+    private boolean alarmActive = false;
+    private boolean snooze = false;
+    private int snoozelaps = 0;
     public boolean isClockRunning = false;
+
 
     public static MainUI ui;
 
@@ -116,5 +121,37 @@ public class ContextClockradio {
 
     public void onLongClick_Snooze(){
         currentState.onLongClick_Snooze(this);
+    }
+
+    public Date getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(Date alarm) {
+        this.alarm = alarm;
+    }
+
+    public boolean isAlarmActive() {
+        return alarmActive;
+    }
+
+    public void setAlarmActive(boolean alarmActive) {
+        this.alarmActive = alarmActive;
+    }
+
+    public boolean isSnooze() {
+        return snooze;
+    }
+
+    public void setSnooze(boolean snooze) {
+        this.snooze = snooze;
+    }
+
+    public int getSnoozelaps() {
+        return snoozelaps;
+    }
+
+    public void setSnoozelaps(int snoozelaps) {
+        this.snoozelaps = snoozelaps;
     }
 }
