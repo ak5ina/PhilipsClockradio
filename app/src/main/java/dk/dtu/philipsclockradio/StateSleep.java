@@ -1,10 +1,11 @@
 package dk.dtu.philipsclockradio;
-import java.util.Timer;
+import android.os.CountDownTimer;
 
 public class StateSleep extends StateAdapter {
 
     int sleepClick;
-    Timer t = new java.util.Timer();
+
+    CountDownTimer hej;
 
 
 
@@ -12,61 +13,44 @@ public class StateSleep extends StateAdapter {
     @Override
     public void onEnterState(final ContextClockradio context) {
 
+        //checker antal click på sleep
         if (sleepClick < 0 || sleepClick > 6) {sleepClick = 1;}
 
+        //tænder LED lys
+        context.ui.turnOnLED(3);
+
+        //Sætter timer igang
+        hej = new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                context.setState(new StateStandby(context.getTime()));
+            }
+        }.start();
+
+        //clicker på knappen for at sætte det igang
         onClick_Sleep(context);
-
-        t.schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        // your code here
-                        context.setState(new StateStandby(context.getTime()));
-                        //
-                        t.cancel();
-                    }
-                },
-                7500
-        );
-
 
     }
 
     @Override
     public void onExitState(ContextClockradio context) {
 
+        context.ui.turnOffLED(3);
+
 
     }
 
     @Override
-    public void onClick_Hour(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onClick_Min(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onClick_Preset(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onClick_Power(ContextClockradio context) {
-
-    }
-
-
-    @Override
-    public void onClick_Sleep(final ContextClockradio context) {
+    public void onClick_Sleep(ContextClockradio context) {
 
         sleepClick++;
 
-
-
-
+        hej.cancel();
 
         if (sleepClick == 7){
             sleepClick = 1;
@@ -74,60 +58,10 @@ public class StateSleep extends StateAdapter {
 
         context.ui.setDisplayText(switcing(sleepClick));
 
-    }
 
-    @Override
-    public void onClick_AL1(ContextClockradio context) {
+        hej.start();
 
-    }
 
-    @Override
-    public void onClick_AL2(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onClick_Snooze(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_Hour(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_Min(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_Preset(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_Power(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_Sleep(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_AL1(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_AL2(ContextClockradio context) {
-
-    }
-
-    @Override
-    public void onLongClick_Snooze(ContextClockradio context) {
 
     }
 
